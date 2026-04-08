@@ -93,12 +93,15 @@ nav {
 /* ── PAGE NAV ── */
 .page-nav {
   display: flex; gap: 0; background: #0D1E30; border-bottom: 2px solid rgba(200,169,110,0.25);
-  overflow-x: auto; padding: 0 48px; align-items: center;
+  padding: 0 48px; align-items: center; justify-content: space-between;
 }
-.page-nav::before {
-  content: 'SOPHEE BOTANICS:'; font-size: 9px; letter-spacing: 0.15em; color: rgba(200,169,110,0.35);
-  padding-right: 16px; border-right: 1px solid rgba(255,255,255,0.06);
-  white-space: nowrap; flex-shrink: 0; font-family: 'Jost', sans-serif;
+.page-nav-logo {
+  font-family: 'Cormorant Garamond', serif; font-size: 16px;
+  color: rgba(200,169,110,0.7); letter-spacing: 0.08em; flex-shrink: 0;
+}
+.page-nav::before { content: none; }
+.page-nav-links {
+  display: flex; gap: 0;
 }
 .page-btn {
   background: none; border: none; color: rgba(253,250,246,0.45);
@@ -263,9 +266,16 @@ nav {
 
 .carousel-card {
   min-width: 260px; background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(200,169,110,0.2); padding: 20px; flex-shrink: 0;
-  cursor: pointer; transition: all 0.2s;
+  border: 1px solid rgba(200,169,110,0.2); flex-shrink: 0;
+  cursor: pointer; transition: all 0.2s; overflow: hidden;
 }
+.carousel-card:hover { background: rgba(200,169,110,0.08); border-color: var(--gold); }
+.carousel-card-img {
+  height: 160px; background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(200,169,110,0.15);
+  display: flex; align-items: center; justify-content: center;
+}
+.carousel-card-body { padding: 20px; }
 .carousel-card:hover { background: rgba(200,169,110,0.08); border-color: var(--gold); }
 .carousel-card-emoji { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.25); font-family: 'Cormorant Garamond', serif; margin-bottom: 12px; min-height: 20px; }
 .carousel-card h4 { color: var(--white); font-size: 15px; font-weight: 300; margin-bottom: 4px; }
@@ -890,16 +900,19 @@ footer {
 
 <!-- PAGE NAV -->
 <div class="page-nav">
-  <button class="page-btn active" onclick="showPage('home')">Homepage</button>
-  <button class="page-btn" onclick="showPage('shop')">Shop</button>
-  <button class="page-btn" onclick="showPage('pdp')">Product Page</button>
-  <button class="page-btn" onclick="showPage('lab')">Virtual Botanical Lab</button>
-  <button class="page-btn" onclick="showPage('checkout')">Checkout</button>
-  <button class="page-btn" onclick="showPage('mobile')">Mobile View</button>
+  <span class="page-nav-logo">Sophee Botanics.</span>
+  <div class="page-nav-links">
+    <button class="page-btn active" onclick="showPage('home')">Homepage</button>
+    <button class="page-btn" onclick="showPage('shop')">Shop</button>
+    <button class="page-btn" onclick="showPage('pdp')">Product Page</button>
+    <button class="page-btn" onclick="showPage('lab')">Virtual Botanical Lab</button>
+    <button class="page-btn" onclick="showPage('checkout')">Checkout</button>
+    <button class="page-btn" onclick="showPage('mobile')">Mobile View</button>
+  </div>
 </div>
 
 <!-- ════════════════════════════════
-     SHOP
+     SHOP / LISTING PAGE
 ════════════════════════════════ -->
 <div class="page" id="shop">
 
@@ -1139,38 +1152,46 @@ footer {
     <div class="section-label">✦ AI Recommendations</div>
     <h2>Chosen for you.</h2>
     <p class="ai-carousel-sub">Personalized based on what ingredient-conscious shoppers like you are exploring.</p>
-    <div class="carousel-track">
-      <div class="carousel-card" onclick="showPage('pdp')">
-        <div style="height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
-          <span style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.15em;">FACIAL OIL</span>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+      <div onclick="showPage('pdp')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(200,169,110,0.2);cursor:pointer;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='rgba(200,169,110,0.2)'">
+        <div style="height:140px;background:rgba(20,52,89,0.8);display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(200,169,110,0.15);">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;">FACIAL OIL</span>
         </div>
-        <h4>Facial Oil</h4>
-        <p>$58 CAD</p>
-        <p class="ai-match">✦ 97% match for your profile</p>
+        <div style="padding:20px;">
+          <h4 style="color:var(--white);font-size:18px;font-weight:300;margin-bottom:6px;">Facial Oil</h4>
+          <p style="color:var(--gold);font-size:15px;margin-bottom:10px;">$58 CAD</p>
+          <p style="font-size:11px;color:rgba(200,169,110,0.7);letter-spacing:0.06em;">✦ 97% match for your profile</p>
+        </div>
       </div>
-      <div class="carousel-card" onclick="showPage('pdp')">
-        <div style="height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
-          <span style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.15em;">LIP BALM</span>
+      <div onclick="showPage('pdp')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(200,169,110,0.2);cursor:pointer;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='rgba(200,169,110,0.2)'">
+        <div style="height:140px;background:rgba(20,52,89,0.8);display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(200,169,110,0.15);">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;">LIP BALM</span>
         </div>
-        <h4>Lip Balm</h4>
-        <p>$18 CAD</p>
-        <p class="ai-match">✦ Top pick for keto users</p>
+        <div style="padding:20px;">
+          <h4 style="color:var(--white);font-size:18px;font-weight:300;margin-bottom:6px;">Lip Balm</h4>
+          <p style="color:var(--gold);font-size:15px;margin-bottom:10px;">$18 CAD</p>
+          <p style="font-size:11px;color:rgba(200,169,110,0.7);letter-spacing:0.06em;">✦ Top pick for keto users</p>
+        </div>
       </div>
-      <div class="carousel-card" onclick="showPage('pdp')">
-        <div style="height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
-          <span style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.15em;">BODY BALM</span>
+      <div onclick="showPage('pdp')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(200,169,110,0.2);cursor:pointer;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='rgba(200,169,110,0.2)'">
+        <div style="height:140px;background:rgba(20,52,89,0.8);display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(200,169,110,0.15);">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;">BODY BALM</span>
         </div>
-        <h4>Body Balm</h4>
-        <p>$42 CAD</p>
-        <p class="ai-match">✦ Loved by caregivers</p>
+        <div style="padding:20px;">
+          <h4 style="color:var(--white);font-size:18px;font-weight:300;margin-bottom:6px;">Body Balm</h4>
+          <p style="color:var(--gold);font-size:15px;margin-bottom:10px;">$42 CAD</p>
+          <p style="font-size:11px;color:rgba(200,169,110,0.7);letter-spacing:0.06em;">✦ Loved by caregivers</p>
+        </div>
       </div>
-      <div class="carousel-card" onclick="showPage('checkout')">
-        <div style="height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
-          <span style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.15em;">BUNDLE</span>
+      <div onclick="showPage('checkout')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(200,169,110,0.2);cursor:pointer;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='rgba(200,169,110,0.2)'">
+        <div style="height:140px;background:rgba(20,52,89,0.8);display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(200,169,110,0.15);">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(255,255,255,0.5);letter-spacing:0.15em;">BUNDLE</span>
         </div>
-        <h4>Full Bundle</h4>
-        <p>$108 CAD</p>
-        <p class="ai-match">✦ Best value</p>
+        <div style="padding:20px;">
+          <h4 style="color:var(--white);font-size:18px;font-weight:300;margin-bottom:6px;">Full Bundle</h4>
+          <p style="color:var(--gold);font-size:15px;margin-bottom:10px;">$108 CAD</p>
+          <p style="font-size:11px;color:rgba(200,169,110,0.7);letter-spacing:0.06em;">✦ Best value</p>
+        </div>
       </div>
     </div>
   </div>
@@ -1208,6 +1229,35 @@ footer {
     <div>
       <div class="founder-quote">"I started making my own lotions because I couldn't find products I trusted. Then I realized most natural ingredients are sugar-based. So I changed the formula entirely."</div>
       <div class="founder-name">- Dominique, Founder & Formulator, MSc Biology</div>
+    </div>
+  </div>
+
+  <!-- Personas -->
+  <div class="personas">
+    <h2>Made for those who read the label.</h2>
+    <div class="persona-grid">
+      <div class="persona-card" data-initial="A">
+        <div class="persona-tag">Persona 01</div>
+        <h3>Avia</h3>
+        <div class="persona-sub">29 · Vancouver · Conscious Minimalist</div>
+        <div class="persona-quote">"I don't want ten products. I want three I can trust completely."</div>
+        <div class="persona-needs">
+          <div class="persona-need">Researches ingredients before purchasing</div>
+          <div class="persona-need">Values brand transparency and ethics</div>
+          <div class="persona-need">Sensitive skin, fragrance-aware</div>
+        </div>
+      </div>
+      <div class="persona-card" data-initial="A">
+        <div class="persona-tag">Persona 02</div>
+        <h3>Angela</h3>
+        <div class="persona-sub">38 · Suburban BC · Overloaded Caregiver</div>
+        <div class="persona-quote">"I need to know exactly what I'm putting on my child's skin. No guessing."</div>
+        <div class="persona-needs">
+          <div class="persona-need">Managing complex daily care protocols</div>
+          <div class="persona-need">Needs verified keto-safe products</div>
+          <div class="persona-need">One less thing to worry about</div>
+        </div>
+      </div>
     </div>
   </div>
 
