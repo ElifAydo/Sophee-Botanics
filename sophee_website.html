@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sophee Botanics - AI-Enhanced Ecommerce UX</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1E4A7A;
+  --navy-deep: #143459;
+  --gold: #C8A96E;
+  --gold-light: #DFC08A;
+  --cream: #F8F4EE;
+  --cream-dark: #EAE6DF;
+  --text: #1A1A2E;
+  --muted: #6B7280;
+  --white: #FDFAF6;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--navy-deep);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 64px;
+  border-bottom: 1px solid rgba(200,169,110,0.2);
+  box-sizing: border-box;
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: var(--white); letter-spacing: 0.04em;
+}
+
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 13px; color: rgba(253,250,246,0.75); text-decoration: none;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px;
+  background: var(--gold); transition: width 0.25s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { width:100%; }
+
+.nav-right { display: flex; align-items: center; gap: 20px; }
+
+.smart-search {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(200,169,110,0.3);
+  border-radius: 20px; padding: 6px 14px;
+}
+.smart-search input {
+  background: none; border: none; outline: none;
+  color: var(--white); font-family: 'Jost', sans-serif; font-size: 13px;
+  width: 160px;
+}
+.smart-search input::placeholder { color: rgba(253,250,246,0.4); }
+.ai-badge {
+  font-size: 9px; background: var(--gold); color: var(--navy-deep);
+  border-radius: 4px; padding: 2px 5px; font-weight: 600; letter-spacing: 0.06em;
+}
+
+.cart-btn {
+  position: relative; background: none; border: 1px solid rgba(200,169,110,0.4);
+  border-radius: 50%; width: 38px; height: 38px; cursor: pointer;
+  color: var(--white); font-size: 16px; display: flex; align-items: center; justify-content: center;
+}
+.cart-count {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--gold); color: var(--navy-deep);
+  font-size: 9px; font-weight: 700; border-radius: 50%;
+  width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
+}
+
+/* ── PAGE NAV ── */
+.page-nav {
+  display: flex; gap: 0; background: #0D1E30; border-bottom: 2px solid rgba(200,169,110,0.25);
+  overflow-x: auto; padding: 0 48px; align-items: center;
+}
+.page-nav::before {
+  content: 'SCREENS:'; font-size: 9px; letter-spacing: 0.15em; color: rgba(200,169,110,0.35);
+  padding-right: 16px; border-right: 1px solid rgba(255,255,255,0.06);
+  white-space: nowrap; flex-shrink: 0; font-family: 'Jost', sans-serif;
+}
+.page-btn {
+  background: none; border: none; color: rgba(253,250,246,0.45);
+  font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 10px 18px; cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap;
+}
+.page-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.page-btn:hover { color: var(--gold-light); }
+
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ══════════════════════════════
+   HOMEPAGE
+══════════════════════════════ */
+
+/* Hero */
+.hero {
+  background: var(--navy-deep);
+  position: relative; overflow: hidden;
+  padding: 100px 48px 80px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  min-height: 480px;
+}
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: 62px; color: var(--white); line-height: 1.1;
+  font-weight: 300; margin-bottom: 20px;
+}
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-size: 15px; color: rgba(253,250,246,0.65); line-height: 1.8;
+  margin-bottom: 36px; max-width: 560px; text-align: center;
+}
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.btn-primary {
+  background: var(--gold); color: var(--navy-deep);
+  border: none; padding: 14px 32px; font-family: 'Jost', sans-serif;
+  font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+.btn-outline {
+  background: none; color: var(--white);
+  border: 1px solid rgba(200,169,110,0.5); padding: 14px 32px;
+  font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+.hero-visual {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+.hero-product-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(200,169,110,0.2);
+  border-radius: 4px; padding: 24px; text-align: center; width: 200px;
+}
+.product-emoji { font-size: 48px; margin-bottom: 12px; }
+.hero-product-card h4 { color: var(--white); font-size: 16px; font-weight: 300; margin-bottom: 4px; }
+.hero-product-card p { color: var(--gold); font-size: 14px; font-family: 'Jost'; }
+
+/* AI Reco Strip */
+.ai-reco-strip {
+  background: rgba(200,169,110,0.08); border-top: 1px solid rgba(200,169,110,0.2);
+  border-bottom: 1px solid rgba(200,169,110,0.2); padding: 12px 48px;
+  display: flex; align-items: center; gap: 16px;
+}
+.ai-reco-strip .sparkle { color: var(--gold); font-size: 16px; }
+.ai-reco-text { font-size: 12px; color: var(--muted); }
+.ai-reco-text strong { color: var(--text); }
+.ai-chips { display: flex; gap: 8px; margin-left: 12px; flex-wrap: wrap; }
+.ai-chip {
+  background: var(--white); border: 1px solid var(--cream-dark);
+  border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--navy);
+  cursor: pointer; transition: all 0.2s; font-weight: 500;
+}
+.ai-chip:hover { border-color: var(--gold); background: rgba(200,169,110,0.08); }
+
+/* Trust Bar */
+.trust-bar {
+  background: var(--white); padding: 20px 48px;
+  display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--cream-dark);
+}
+.trust-item { display: flex; align-items: center; gap: 10px; }
+.trust-icon { font-size: 18px; }
+.trust-item span { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* Products */
+.section { padding: 80px 48px; }
+.section-label {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 12px;
+}
+.section h2 { font-size: 42px; font-weight: 300; margin-bottom: 48px; color: var(--text); }
+
+.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+.product-card {
+  background: var(--white); border: 1px solid var(--cream-dark);
+  transition: all 0.25s; cursor: pointer; position: relative; overflow: hidden;
+}
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(20,52,89,0.12); }
+.product-card:hover .product-name { color: var(--navy); }
+.product-card:hover .product-name::after { width: 100%; }
+
+.product-img {
+  background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
+  height: 220px; display: flex; align-items: center; justify-content: center;
+  font-size: 64px; position: relative;
+}
+.ai-reco-badge {
+  position: absolute; top: 12px; right: 12px;
+  background: var(--gold); color: var(--navy-deep);
+  font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 8px; border-radius: 2px;
+  display: flex; align-items: center; gap: 4px;
+}
+
+.product-info { padding: 24px; }
+.product-name {
+  font-family: 'Cormorant Garamond', serif; font-size: 22px;
+  color: var(--text); margin-bottom: 8px; position: relative; display: inline-block;
+}
+.product-name::after {
+  content:''; position:absolute; bottom:0; left:0; width:0; height:1px;
+  background: var(--gold); transition: width 0.3s;
+}
+.product-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+.product-footer { display: flex; align-items: center; justify-content: space-between; }
+.product-price { font-size: 18px; color: var(--gold); font-weight: 500; }
+.add-btn {
+  background: var(--navy); color: var(--white); border: none;
+  padding: 8px 16px; font-family: 'Jost', sans-serif; font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: background 0.2s;
+}
+.add-btn:hover { background: var(--navy-deep); }
+
+/* AI Personalized Carousel */
+.ai-carousel-section {
+  background: var(--navy-deep); padding: 60px 48px;
+}
+.ai-carousel-section .section-label { color: var(--gold-light); }
+.ai-carousel-section h2 { color: var(--white); margin-bottom: 8px; }
+.ai-carousel-sub { font-size: 13px; color: rgba(253,250,246,0.5); margin-bottom: 36px; }
+.carousel-track { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px; }
+.carousel-track::-webkit-scrollbar { height: 2px; }
+.carousel-track::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+.carousel-track::-webkit-scrollbar-thumb { background: var(--gold); }
+
+.carousel-card {
+  min-width: 180px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(200,169,110,0.2); padding: 20px; flex-shrink: 0;
+  cursor: pointer; transition: all 0.2s;
+}
+.carousel-card:hover { background: rgba(200,169,110,0.08); border-color: var(--gold); }
+.carousel-card-emoji { font-size: 32px; margin-bottom: 12px; }
+.carousel-card h4 { color: var(--white); font-size: 15px; font-weight: 300; margin-bottom: 4px; }
+.carousel-card p { color: var(--gold); font-size: 13px; }
+.ai-match { font-size: 10px; color: rgba(200,169,110,0.7); margin-top: 8px; }
+
+/* Philosophy */
+.philosophy {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  padding: 80px 48px;
+}
+.philosophy-text .section-label { color: var(--gold); }
+.philosophy-text h2 { font-size: 38px; font-weight: 300; margin-bottom: 20px; line-height: 1.2; }
+.philosophy-text p { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+.philosophy-rule { height: 1px; background: var(--gold); margin: 32px 0; opacity: 0.3; }
+.ingredient-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; }
+.pill-no {
+  background: rgba(30,74,122,0.08); border: 1px solid rgba(30,74,122,0.2);
+  border-radius: 20px; padding: 6px 14px; font-size: 12px; color: var(--navy);
+  display: flex; align-items: center; gap: 6px;
+}
+.pill-no .x { color: #C0392B; font-weight: 700; }
+
+.philosophy-visual {
+  background: var(--navy); padding: 48px; position: relative;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.philosophy-visual::before {
+  content: '✦'; position: absolute; top: 20px; right: 24px;
+  color: var(--gold); font-size: 24px; opacity: 0.4;
+}
+.ing-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px; background: rgba(255,255,255,0.04); border-left: 2px solid var(--gold);
+}
+.ing-row.no-border { border-left-color: rgba(255,255,255,0.1); }
+.ing-name { color: var(--white); font-size: 14px; font-weight: 300; flex: 1; }
+.ing-status { font-size: 11px; padding: 3px 10px; border-radius: 2px; }
+.ing-status.yes { background: rgba(200,169,110,0.15); color: var(--gold); }
+.ing-status.no { background: rgba(192,57,43,0.1); color: #E74C3C; }
+
+/* Founder Band */
+.founder-band {
+  background: var(--navy-deep); padding: 64px 48px;
+  display: grid; grid-template-columns: 80px 1fr; gap: 40px; align-items: center;
+}
+.founder-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; flex-shrink: 0;
+}
+.founder-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-style: italic; color: var(--white);
+  line-height: 1.5; border-left: 2px solid var(--gold); padding-left: 32px;
+}
+.founder-name { font-size: 13px; color: var(--gold); margin-top: 16px; letter-spacing: 0.1em; }
+
+/* Personas */
+.personas { padding: 80px 48px; background: var(--white); }
+.personas h2 { font-size: 38px; font-weight: 300; margin-bottom: 40px; }
+.persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.persona-card {
+  border: 1px solid var(--cream-dark); padding: 36px; position: relative;
+}
+.persona-card::before {
+  content: attr(data-initial);
+  position: absolute; top: 24px; right: 24px;
+  font-family: 'Cormorant Garamond', serif; font-size: 64px; font-weight: 300;
+  color: var(--navy); opacity: 0.06; line-height: 1;
+}
+.persona-tag {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 12px;
+}
+.persona-card h3 { font-size: 28px; font-weight: 300; margin-bottom: 6px; }
+.persona-card .persona-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.persona-quote { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; line-height: 1.6; color: var(--text); }
+.persona-needs { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+.persona-need { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.persona-need::before { content: '→'; color: var(--gold); }
+
+/* Testimonials */
+.testimonials { padding: 80px 48px; background: var(--cream); }
+.testimonials h2 { font-size: 38px; font-weight: 300; margin-bottom: 40px; }
+.testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.testimonial-card { background: var(--white); padding: 28px; border: 1px solid var(--cream-dark); }
+.stars { color: var(--gold); font-size: 12px; margin-bottom: 12px; }
+.testimonial-text { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 16px; font-style: italic; }
+.testimonial-author { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; }
+
+/* Footer */
+footer {
+  background: var(--navy-deep); padding: 60px 48px 32px;
+  border-top: 1px solid rgba(200,169,110,0.2);
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand p { font-size: 13px; color: rgba(253,250,246,0.5); line-height: 1.8; margin-top: 12px; max-width: 240px; }
+.footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--white); }
+.footer-col h5 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 13px; color: rgba(253,250,246,0.5); text-decoration: none; margin-bottom: 10px; transition: color 0.2s; }
+.footer-col a:hover { color: var(--gold); }
+.newsletter-form { display: flex; gap: 0; margin-top: 12px; }
+.newsletter-input {
+  flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(200,169,110,0.3);
+  border-right: none; padding: 10px 14px; color: var(--white);
+  font-family: 'Jost', sans-serif; font-size: 12px; outline: none;
+}
+.newsletter-btn {
+  background: var(--gold); border: none; color: var(--navy-deep);
+  padding: 10px 16px; font-family: 'Jost', sans-serif; font-size: 11px;
+  font-weight: 600; cursor: pointer; letter-spacing: 0.08em;
+}
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+.footer-bottom p { font-size: 12px; color: rgba(253,250,246,0.3); }
+.made-bc { font-size: 12px; color: var(--gold); }
+
+/* ══════════════════════════════
+   PRODUCT PAGE
+══════════════════════════════ */
+.pdp { display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: 600px; }
+
+.pdp-gallery {
+  background: var(--navy-deep); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 60px; gap: 20px;
+}
+.pdp-main-img {
+  width: 240px; height: 300px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(200,169,110,0.2);
+  display: flex; align-items: center; justify-content: center; font-size: 96px;
+}
+.pdp-thumbs { display: flex; gap: 10px; }
+.pdp-thumb {
+  width: 56px; height: 56px; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(200,169,110,0.2); display: flex; align-items: center;
+  justify-content: center; font-size: 24px; cursor: pointer; transition: border-color 0.2s;
+}
+.pdp-thumb:hover, .pdp-thumb.active { border-color: var(--gold); }
+
+.pdp-info { padding: 60px 48px; background: var(--white); overflow-y: auto; }
+.pdp-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.pdp-info h1 { font-size: 42px; font-weight: 300; margin-bottom: 8px; }
+.pdp-tagline { font-size: 14px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+.pdp-price { font-size: 28px; color: var(--gold); font-weight: 500; margin-bottom: 28px; }
+
+.pdp-attributes { display: flex; gap: 20px; margin-bottom: 28px; flex-wrap: wrap; }
+.pdp-attr { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; letter-spacing: 0.06em; }
+.pdp-attr span.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); display: inline-block; }
+
+.pdp-add {
+  width: 100%; background: var(--navy); color: var(--white); border: none;
+  padding: 16px; font-family: 'Jost', sans-serif; font-size: 13px;
+  letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+  transition: background 0.2s; margin-bottom: 12px;
+}
+.pdp-add:hover { background: var(--navy-deep); }
+.pdp-secondary-btn {
+  width: 100%; background: none; color: var(--navy); border: 1px solid rgba(30,74,122,0.3);
+  padding: 14px; font-family: 'Jost', sans-serif; font-size: 12px;
+  letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; margin-bottom: 32px;
+  transition: all 0.2s;
+}
+.pdp-secondary-btn:hover { border-color: var(--navy); }
+
+/* Ingredient Accordion */
+.accordion { border-top: 1px solid var(--cream-dark); }
+.accordion-item { border-bottom: 1px solid var(--cream-dark); }
+.accordion-btn {
+  width: 100%; background: none; border: none; display: flex;
+  justify-content: space-between; align-items: center;
+  padding: 18px 0; cursor: pointer; font-family: 'Jost', sans-serif;
+  font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text);
+}
+.accordion-btn .chevron { transition: transform 0.2s; color: var(--gold); }
+.accordion-btn.open .chevron { transform: rotate(180deg); }
+.accordion-content { display: none; padding-bottom: 20px; }
+.accordion-content.open { display: block; }
+
+.ingredient-list { display: flex; flex-direction: column; gap: 12px; }
+.ingredient-row {
+  display: flex; align-items: flex-start; gap: 12px; padding: 12px;
+  background: var(--cream); border-left: 2px solid var(--gold);
+}
+.ingredient-row.no { border-left-color: rgba(192,57,43,0.3); background: rgba(192,57,43,0.03); }
+.ingredient-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.ingredient-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* No Glycerin callout */
+.no-glycerin-callout {
+  background: var(--navy); padding: 24px; margin: 24px 0;
+  border-left: 3px solid var(--gold);
+}
+.no-glycerin-callout h4 { color: var(--white); font-size: 16px; font-weight: 300; margin-bottom: 8px; }
+.no-glycerin-callout p { font-size: 13px; color: rgba(253,250,246,0.65); line-height: 1.7; }
+
+/* AI Lab Section on PDP */
+.ai-lab-cta {
+  background: linear-gradient(135deg, rgba(200,169,110,0.08), rgba(30,74,122,0.06));
+  border: 1px solid rgba(200,169,110,0.3); padding: 24px; margin-top: 24px;
+}
+.ai-lab-cta-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ai-lab-cta-header h4 { font-size: 16px; color: var(--navy); font-weight: 400; }
+.sparkle-icon { color: var(--gold); font-size: 18px; }
+.ai-lab-cta p { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
+.ai-lab-btn {
+  background: var(--gold); color: var(--navy-deep); border: none;
+  padding: 10px 24px; font-family: 'Jost', sans-serif; font-size: 12px;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s;
+}
+.ai-lab-btn:hover { background: var(--gold-light); }
+
+/* PDP Chatbot Assist */
+.chatbot-assist {
+  display: flex; align-items: center; gap: 12px; padding: 16px;
+  background: rgba(30,74,122,0.04); border: 1px solid rgba(30,74,122,0.1);
+  margin-top: 16px; cursor: pointer; transition: all 0.2s;
+}
+.chatbot-assist:hover { background: rgba(30,74,122,0.08); }
+.chat-icon { font-size: 22px; }
+.chatbot-assist p { font-size: 13px; color: var(--navy); }
+.chatbot-assist p span { font-weight: 500; }
+
+/* ══════════════════════════════
+   VIRTUAL BOTANICAL LAB
+══════════════════════════════ */
+.lab-page { background: var(--cream); }
+
+.lab-hero {
+  background: var(--navy-deep); padding: 60px 48px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.lab-hero h1 { font-size: 48px; color: var(--white); font-weight: 300; line-height: 1.15; }
+.lab-hero h1 em { font-style: italic; color: var(--gold); }
+.lab-hero p { font-size: 15px; color: rgba(253,250,246,0.6); line-height: 1.8; margin: 20px 0; }
+.lab-flow {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(200,169,110,0.15); padding: 28px;
+}
+.lab-flow h4 { color: var(--gold); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 20px; }
+.flow-steps { display: flex; flex-direction: column; gap: 12px; }
+.flow-step { display: flex; align-items: center; gap: 14px; }
+.flow-num {
+  width: 28px; height: 28px; border: 1px solid var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--gold); flex-shrink: 0;
+}
+.flow-step p { font-size: 13px; color: rgba(253,250,246,0.7); }
+.flow-arrow { color: rgba(200,169,110,0.3); font-size: 16px; text-align: center; padding-left: 14px; }
+
+/* Lab Interface */
+.lab-interface { padding: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+.lab-panel { background: var(--white); border: 1px solid var(--cream-dark); padding: 32px; }
+.lab-panel-title {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+}
+.lab-panel-title .ai-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--gold);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* Skin type selector */
+.skin-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 24px; }
+.skin-type-btn {
+  background: none; border: 1px solid var(--cream-dark); padding: 12px 8px;
+  font-family: 'Jost', sans-serif; font-size: 12px; cursor: pointer;
+  transition: all 0.2s; text-align: center; color: var(--text);
+}
+.skin-type-btn .skin-emoji { font-size: 20px; display: block; margin-bottom: 4px; }
+.skin-type-btn.selected { border-color: var(--gold); background: rgba(200,169,110,0.08); color: var(--navy); }
+.skin-type-btn:hover { border-color: var(--gold-light); }
+
+/* Concerns */
+.lab-panel h4 { font-size: 14px; color: var(--text); margin-bottom: 12px; font-weight: 400; }
+.concern-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.concern-chip {
+  border: 1px solid var(--cream-dark); border-radius: 20px; padding: 6px 14px;
+  font-size: 12px; cursor: pointer; transition: all 0.2s; color: var(--text);
+  background: none;
+}
+.concern-chip.selected { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.concern-chip:hover:not(.selected) { border-color: var(--navy); color: var(--navy); }
+
+/* Ingredient drag zone */
+.ingredient-pool { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+.ing-btn {
+  background: var(--cream); border: 1px solid var(--cream-dark);
+  padding: 10px 6px; font-size: 11px; text-align: center; cursor: grab;
+  transition: all 0.2s; color: var(--text);
+}
+.ing-btn .ing-emoji { font-size: 20px; display: block; margin-bottom: 4px; }
+.ing-btn:hover { border-color: var(--gold); background: rgba(200,169,110,0.06); }
+.ing-btn.dragging { opacity: 0.5; }
+.ing-btn.selected { border-color: var(--navy); background: rgba(30,74,122,0.06); }
+
+.drop-zone {
+  border: 2px dashed var(--cream-dark); padding: 20px; text-align: center;
+  min-height: 80px; transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 8px;
+}
+.drop-zone.drag-over { border-color: var(--gold); background: rgba(200,169,110,0.04); }
+.drop-zone p { font-size: 12px; color: var(--muted); }
+.selected-ing-tag {
+  background: var(--navy); color: var(--white);
+  padding: 4px 10px; border-radius: 2px; font-size: 11px;
+}
+
+.lab-run-btn {
+  width: 100%; background: var(--navy); color: var(--white); border: none;
+  padding: 16px; font-family: 'Jost', sans-serif; font-size: 13px;
+  letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: background 0.2s; margin-top: 16px;
+}
+.lab-run-btn:hover { background: var(--navy-deep); }
+
+/* AI Results Panel */
+.ai-results { background: var(--navy-deep); color: var(--white); padding: 32px; }
+.ai-results-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 24px;
+}
+.ai-results-header h3 { font-size: 22px; font-weight: 300; }
+.ai-thinking {
+  font-size: 12px; color: var(--gold); letter-spacing: 0.1em;
+  animation: blink 1.5s infinite;
+}
+@keyframes blink { 0%, 100% { opacity:1; } 50% { opacity:0.3; } }
+
+.result-score {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 24px;
+  padding: 16px; background: rgba(255,255,255,0.04); border-left: 2px solid var(--gold);
+}
+.score-ring {
+  width: 64px; height: 64px; border-radius: 50%;
+  border: 3px solid var(--gold); display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0;
+}
+.score-num { font-size: 22px; color: var(--gold); font-weight: 500; }
+.score-label { font-size: 13px; color: rgba(253,250,246,0.7); line-height: 1.5; }
+.score-label strong { color: var(--white); }
+
+.result-tips { margin-bottom: 24px; }
+.result-tip { display: flex; gap: 10px; margin-bottom: 12px; }
+.tip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 5px; }
+.result-tip p { font-size: 13px; color: rgba(253,250,246,0.7); line-height: 1.5; }
+
+.reco-products { display: flex; flex-direction: column; gap: 10px; }
+.reco-product {
+  display: flex; align-items: center; gap: 14px; padding: 14px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(200,169,110,0.2);
+  cursor: pointer; transition: all 0.2s;
+}
+.reco-product:hover { background: rgba(200,169,110,0.08); border-color: var(--gold); }
+.reco-product-emoji { font-size: 28px; }
+.reco-product-info { flex: 1; }
+.reco-product-info h5 { font-size: 14px; color: var(--white); font-weight: 300; margin-bottom: 2px; }
+.reco-product-info p { font-size: 11px; color: rgba(253,250,246,0.5); }
+.reco-product-price { font-size: 15px; color: var(--gold); }
+.reco-match-label { font-size: 10px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.result-actions { display: flex; gap: 10px; margin-top: 24px; }
+.action-btn {
+  flex: 1; padding: 10px; border: 1px solid rgba(200,169,110,0.3); background: none;
+  color: var(--white); font-family: 'Jost', sans-serif; font-size: 12px;
+  cursor: pointer; transition: all 0.2s; letter-spacing: 0.06em;
+}
+.action-btn:hover { background: rgba(200,169,110,0.1); border-color: var(--gold); }
+
+/* ══════════════════════════════
+   CHECKOUT
+══════════════════════════════ */
+.checkout-grid { display: grid; grid-template-columns: 1fr 400px; min-height: 600px; }
+
+.checkout-form { padding: 60px 48px; background: var(--white); }
+.checkout-form h2 { font-size: 32px; font-weight: 300; margin-bottom: 36px; }
+.checkout-step-bar {
+  display: flex; align-items: center; gap: 0; margin-bottom: 40px;
+}
+.checkout-step { display: flex; align-items: center; gap: 0; }
+.step-circle {
+  width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--cream-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--muted);
+}
+.step-circle.done { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.step-circle.active { border-color: var(--gold); color: var(--gold); }
+.step-label { font-size: 12px; color: var(--muted); padding: 0 12px; }
+.step-line { flex: 1; height: 1px; background: var(--cream-dark); }
+
+.form-section { margin-bottom: 32px; }
+.form-section h4 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-field {
+  display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px;
+}
+.form-field label { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
+.form-field input {
+  border: 1px solid var(--cream-dark); padding: 12px 14px;
+  font-family: 'Jost', sans-serif; font-size: 14px; outline: none;
+  transition: border-color 0.2s; background: var(--cream);
+}
+.form-field input:focus { border-color: var(--navy); }
+
+.checkout-summary {
+  background: var(--navy-deep); padding: 60px 40px;
+}
+.checkout-summary h3 { color: var(--white); font-size: 24px; font-weight: 300; margin-bottom: 32px; }
+.cart-line { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.cart-line-emoji { font-size: 28px; }
+.cart-line-info { flex: 1; }
+.cart-line-info h5 { color: var(--white); font-size: 14px; font-weight: 300; }
+.cart-line-info p { color: rgba(253,250,246,0.4); font-size: 12px; }
+.cart-line-price { color: var(--gold); font-size: 15px; }
+.cart-total { border-top: 1px solid rgba(200,169,110,0.2); padding-top: 20px; margin-top: 8px; display: flex; justify-content: space-between; }
+.cart-total span { color: rgba(253,250,246,0.6); font-size: 14px; }
+.cart-total strong { color: var(--gold); font-size: 20px; }
+
+/* Upsell block */
+.upsell-block {
+  margin-top: 32px; padding: 20px;
+  background: rgba(200,169,110,0.08); border: 1px solid rgba(200,169,110,0.2);
+}
+.upsell-block h4 { color: var(--gold); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.upsell-item { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.upsell-item-info { flex: 1; }
+.upsell-item-info p { color: rgba(253,250,246,0.8); font-size: 13px; }
+.upsell-item-info span { font-size: 11px; color: rgba(253,250,246,0.4); }
+.upsell-add-btn {
+  background: none; border: 1px solid rgba(200,169,110,0.4); color: var(--gold);
+  padding: 5px 12px; font-size: 11px; cursor: pointer; font-family: 'Jost', sans-serif;
+  transition: all 0.2s;
+}
+.upsell-add-btn:hover { background: var(--gold); color: var(--navy-deep); }
+
+/* Checkout chatbot */
+.checkout-chatbot {
+  margin-top: 24px; border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03);
+}
+.chatbot-header {
+  padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06); cursor: pointer;
+}
+.chatbot-status { width: 8px; height: 8px; border-radius: 50%; background: #2ECC71; flex-shrink: 0; }
+.chatbot-header p { font-size: 12px; color: rgba(253,250,246,0.6); flex: 1; }
+.chatbot-header .chevron { color: var(--gold); font-size: 12px; }
+.chatbot-messages { padding: 16px; display: none; }
+.chatbot-messages.open { display: block; }
+.chat-bubble {
+  background: rgba(255,255,255,0.06); border-radius: 2px;
+  padding: 10px 14px; font-size: 12px; color: rgba(253,250,246,0.75);
+  line-height: 1.6; margin-bottom: 8px; max-width: 90%;
+}
+.chat-bubble.user { background: rgba(200,169,110,0.12); color: rgba(253,250,246,0.9); margin-left: auto; }
+.chat-input-row { display: flex; gap: 0; margin-top: 12px; }
+.chat-input-row input {
+  flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  border-right: none; padding: 8px 12px; color: var(--white);
+  font-family: 'Jost', sans-serif; font-size: 12px; outline: none;
+}
+.chat-send { background: var(--gold); border: none; color: var(--navy-deep); padding: 8px 14px; cursor: pointer; font-size: 14px; }
+
+/* ══════════════════════════════
+   MOBILE VIEW
+══════════════════════════════ */
+.mobile-wrapper {
+  display: flex; justify-content: center; padding: 40px;
+  background: var(--cream-dark); min-height: 600px;
+}
+.mobile-frame {
+  width: 375px; background: var(--white); overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  border-radius: 8px; position: relative;
+}
+.mobile-status-bar {
+  background: var(--navy-deep); height: 36px; display: flex;
+  align-items: center; justify-content: space-between; padding: 0 20px;
+}
+.mobile-status-bar span { font-size: 11px; color: rgba(255,255,255,0.7); }
+.mobile-nav {
+  background: var(--navy-deep); padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mobile-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--white); }
+.mobile-icons { display: flex; gap: 16px; font-size: 18px; color: rgba(255,255,255,0.7); cursor: pointer; }
+.mobile-search {
+  margin: 12px 16px; display: flex; align-items: center; gap: 8px;
+  background: var(--cream); border: 1px solid var(--cream-dark); padding: 10px 14px;
+}
+.mobile-search input { flex: 1; background: none; border: none; outline: none; font-family: 'Jost', sans-serif; font-size: 13px; }
+.mobile-ai-badge { font-size: 9px; background: var(--gold); color: var(--navy-deep); padding: 2px 6px; border-radius: 3px; font-weight: 600; }
+
+.mobile-hero { background: var(--navy-deep); padding: 32px 20px; text-align: center; }
+.mobile-hero h1 { font-size: 32px; color: var(--white); font-weight: 300; margin-bottom: 8px; }
+.mobile-hero p { font-size: 13px; color: rgba(253,250,246,0.6); margin-bottom: 20px; }
+.mobile-hero-btns { display: flex; gap: 10px; justify-content: center; }
+.mobile-btn-p { background: var(--gold); color: var(--navy-deep); border: none; padding: 10px 20px; font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: 0.08em; cursor: pointer; }
+.mobile-btn-o { background: none; color: var(--white); border: 1px solid rgba(200,169,110,0.4); padding: 10px 20px; font-family: 'Jost', sans-serif; font-size: 12px; cursor: pointer; }
+
+.mobile-trust { display: flex; justify-content: space-around; padding: 14px 16px; background: var(--white); border-bottom: 1px solid var(--cream-dark); }
+.mobile-trust-item { text-align: center; font-size: 10px; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+
+.mobile-ai-reco { padding: 16px; background: rgba(200,169,110,0.06); border-bottom: 1px solid rgba(200,169,110,0.15); }
+.mobile-ai-reco p { font-size: 11px; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.mobile-chips { display: flex; gap: 8px; overflow-x: auto; }
+.mobile-chip { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 20px; padding: 5px 12px; font-size: 11px; color: var(--navy); white-space: nowrap; cursor: pointer; flex-shrink: 0; }
+
+.mobile-products { padding: 20px 16px; }
+.mobile-products h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; margin-bottom: 16px; }
+.mobile-product-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+.mobile-product-card { min-width: 140px; flex-shrink: 0; cursor: pointer; }
+.mobile-product-img { height: 140px; background: var(--navy-deep); display: flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 10px; }
+.mobile-product-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; margin-bottom: 4px; }
+.mobile-product-price { font-size: 14px; color: var(--gold); }
+
+.mobile-lab-cta {
+  margin: 0 16px 16px; background: var(--navy); padding: 20px;
+  display: flex; align-items: center; gap: 14px; cursor: pointer;
+}
+.mobile-lab-cta .lab-icon { font-size: 32px; }
+.mobile-lab-cta h4 { color: var(--white); font-size: 15px; font-weight: 300; margin-bottom: 4px; }
+.mobile-lab-cta p { font-size: 12px; color: var(--gold); }
+
+/* FAB Chatbot */
+.fab-chatbot {
+  position: absolute; bottom: 80px; right: 16px;
+  width: 48px; height: 48px; background: var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+.fab-lab {
+  position: absolute; bottom: 140px; right: 16px;
+  background: var(--navy); border-radius: 24px; padding: 8px 14px;
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2); z-index: 10;
+}
+.fab-lab span { font-size: 12px; color: var(--white); white-space: nowrap; }
+.fab-lab .sparkle { font-size: 14px; }
+
+/* Mobile bottom nav */
+.mobile-bottom-nav {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--white); border-top: 1px solid var(--cream-dark);
+  display: flex; justify-content: space-around; padding: 10px 0 14px;
+  z-index: 5;
+}
+.bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+.bottom-nav-item span:first-child { font-size: 20px; }
+.bottom-nav-item span:last-child { font-size: 9px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.bottom-nav-item.active span:last-child { color: var(--navy); }
+
+/* ── FLOATING CHATBOT ── */
+.chatbot-float {
+  position: fixed; bottom: 32px; right: 32px; z-index: 200;
+}
+.chatbot-fab {
+  width: 56px; height: 56px; background: var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+  cursor: pointer; box-shadow: 0 4px 20px rgba(200,169,110,0.4);
+  border: none; transition: transform 0.2s;
+}
+.chatbot-fab:hover { transform: scale(1.08); }
+.chatbot-window {
+  position: absolute; bottom: 68px; right: 0;
+  width: 300px; background: var(--white);
+  border: 1px solid var(--cream-dark); box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  display: none;
+}
+.chatbot-window.open { display: block; }
+.chatbot-win-header {
+  background: var(--navy-deep); padding: 14px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.chatbot-win-header h5 { color: var(--white); font-size: 14px; font-weight: 400; flex: 1; }
+.chatbot-win-header .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #2ECC71; }
+.chatbot-close { background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 16px; }
+.chatbot-body { padding: 16px; height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.chat-msg { font-size: 12px; line-height: 1.6; padding: 10px 12px; border-radius: 2px; max-width: 85%; }
+.chat-msg.bot { background: var(--cream); color: var(--text); align-self: flex-start; border-left: 2px solid var(--gold); }
+.chat-msg.user-msg { background: var(--navy); color: var(--white); align-self: flex-end; }
+.chatbot-input-area { border-top: 1px solid var(--cream-dark); display: flex; }
+.chatbot-input-area input {
+  flex: 1; padding: 12px; border: none; outline: none;
+  font-family: 'Jost', sans-serif; font-size: 13px; background: var(--cream);
+}
+.chatbot-send { background: var(--gold); border: none; color: var(--navy-deep); padding: 12px 16px; cursor: pointer; font-size: 16px; }
+
+/* Utility */
+.section-divider { height: 1px; background: var(--gold); opacity: 0.15; margin: 0 48px; }
+</style>
+</head>
+<body>
+
+<!-- FLOATING CHATBOT -->
+<div class="chatbot-float">
+  <div class="chatbot-window" id="chatbot-window">
+    <div class="chatbot-win-header">
+      <div class="status-dot"></div>
+      <h5>Sophee Assistant ✦ AI</h5>
+      <button class="chatbot-close" onclick="toggleChat()">×</button>
+    </div>
+    <div class="chatbot-body" id="chatbot-body">
+      <div class="chat-msg bot">Hi! I'm Sophee's AI assistant. I can help you find the right product, answer ingredient questions, or track your order.</div>
+      <div class="chat-msg bot">What brings you here today?</div>
+    </div>
+    <div class="chatbot-input-area">
+      <input type="text" placeholder="Ask me anything..." id="chat-input" onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chatbot-send" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+  <button class="chatbot-fab" onclick="toggleChat()">Chat</button>
+</div>
+
+
+
+<!-- PAGE NAV -->
+<div class="page-nav">
+  <button class="page-btn active" onclick="showPage('home')">Homepage</button>
+  <button class="page-btn" onclick="showPage('shop')">Shop / Listing</button>
+  <button class="page-btn" onclick="showPage('pdp')">Product Page</button>
+  <button class="page-btn" onclick="showPage('lab')">Virtual Botanical Lab</button>
+  <button class="page-btn" onclick="showPage('checkout')">Checkout</button>
+  <button class="page-btn" onclick="showPage('mobile')">Mobile View</button>
+</div>
+
+<!-- ════════════════════════════════
+     SHOP / LISTING PAGE
+════════════════════════════════ -->
+<div class="page" id="shop">
+
+  <!-- Shop Header -->
+  <div style="background:var(--navy-deep); padding:48px 48px 32px;">
+    <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">✦ Our Collection</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--white);margin-bottom:12px;">Three products.<br><em style="font-style:italic;color:var(--gold);">Zero compromise.</em></h2>
+    <p style="font-size:14px;color:rgba(253,250,246,0.55);max-width:480px;line-height:1.8;">Every formula starts with the same question: would we put this on Sofia's skin? If not, it doesn't exist.</p>
+  </div>
+
+  <!-- Filter Bar -->
+  <div style="background:var(--white);border-bottom:1px solid var(--cream-dark);padding:14px 48px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Filter by:</span>
+    <button onclick="filterProducts(this,'all')" class="filter-btn active-filter" style="border:1px solid var(--navy);background:var(--navy);color:var(--white);padding:6px 16px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.08em;cursor:pointer;">All Products</button>
+    <button onclick="filterProducts(this,'face')" class="filter-btn" style="border:1px solid var(--cream-dark);background:none;color:var(--text);padding:6px 16px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.08em;cursor:pointer;transition:all 0.2s;">Face</button>
+    <button onclick="filterProducts(this,'lip')" class="filter-btn" style="border:1px solid var(--cream-dark);background:none;color:var(--text);padding:6px 16px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.08em;cursor:pointer;transition:all 0.2s;">Lip</button>
+    <button onclick="filterProducts(this,'body')" class="filter-btn" style="border:1px solid var(--cream-dark);background:none;color:var(--text);padding:6px 16px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.08em;cursor:pointer;transition:all 0.2s;">Body</button>
+    <button onclick="filterProducts(this,'keto')" class="filter-btn" style="border:1px solid var(--cream-dark);background:none;color:var(--text);padding:6px 16px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.08em;cursor:pointer;transition:all 0.2s;">Keto-Safe</button>
+    <button onclick="filterProducts(this,'sensitive')" class="filter-btn" style="border:1px solid var(--cream-dark);background:none;color:var(--text);padding:6px 16px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.08em;cursor:pointer;transition:all 0.2s;">Sensitive Skin</button>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+      <span style="font-size:11px;color:var(--muted);">Sort:</span>
+      <select style="border:1px solid var(--cream-dark);background:var(--cream);padding:6px 12px;font-family:'Jost',sans-serif;font-size:11px;color:var(--text);outline:none;">
+        <option>Featured</option>
+        <option>Price: Low to High</option>
+        <option>Price: High to Low</option>
+        <option>Newest</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- AI Reco Banner -->
+  <div style="background:rgba(200,169,110,0.07);border-bottom:1px solid rgba(200,169,110,0.2);padding:12px 48px;display:flex;align-items:center;gap:12px;">
+    <span style="color:var(--gold);font-size:14px;">✦</span>
+    <p style="font-size:12px;color:var(--muted);"><strong style="color:var(--text);">AI Suggestion:</strong> Based on your profile — sensitive skin, keto-conscious — we recommend starting with the Facial Oil.</p>
+    <button onclick="showPage('pdp')" style="margin-left:auto;background:none;border:1px solid rgba(200,169,110,0.4);color:var(--navy);padding:5px 14px;font-family:'Jost',sans-serif;font-size:11px;cursor:pointer;white-space:nowrap;">View Match →</button>
+  </div>
+
+  <!-- Product Grid -->
+  <div style="padding:48px;background:var(--cream);">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;" id="shop-grid">
+
+      <!-- Product 1: Facial Oil -->
+      <div class="shop-card" data-cat="face keto sensitive" style="background:var(--white);border:1px solid var(--cream-dark);cursor:pointer;transition:all 0.25s;" onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(20,52,89,0.1)'" onmouseleave="this.style.transform='';this.style.boxShadow=''">
+        <div style="background:linear-gradient(145deg,var(--navy-deep),var(--navy));height:260px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;position:relative;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:rgba(255,255,255,0.25);letter-spacing:0.15em;">FACIAL OIL</span>
+          <span style="font-size:11px;color:rgba(200,169,110,0.6);letter-spacing:0.1em;">30 ml</span>
+          <div style="position:absolute;top:12px;right:12px;background:var(--gold);color:var(--navy-deep);font-size:9px;font-weight:700;padding:4px 8px;letter-spacing:0.06em;">✦ AI PICK</div>
+          <div style="position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(200,169,110,0.2);color:var(--gold);font-size:9px;padding:3px 8px;letter-spacing:0.06em;">BESTSELLER</div>
+        </div>
+        <div style="padding:24px;">
+          <div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Pillar 01 — Face</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:8px;color:var(--text);">Soothing Facial Oil</h3>
+          <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">An uplifting botanical oil for daily balance. Formulated without glycerin, sorbitol, or cornstarch.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+            <span style="font-size:10px;background:rgba(30,74,122,0.06);border:1px solid rgba(30,74,122,0.15);color:var(--navy);padding:3px 8px;">Glycerin-Free</span>
+            <span style="font-size:10px;background:rgba(30,74,122,0.06);border:1px solid rgba(30,74,122,0.15);color:var(--navy);padding:3px 8px;">Keto-Safe</span>
+            <span style="font-size:10px;background:rgba(30,74,122,0.06);border:1px solid rgba(30,74,122,0.15);color:var(--navy);padding:3px 8px;">Sensitive Skin</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:22px;color:var(--gold);font-weight:500;">$58 CAD</span>
+            <button onclick="showPage('pdp')" style="background:var(--navy);color:var(--white);border:none;padding:10px 20px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 2: Lip Balm -->
+      <div class="shop-card" data-cat="lip keto sensitive" style="background:var(--white);border:1px solid var(--cream-dark);cursor:pointer;transition:all 0.25s;" onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(20,52,89,0.1)'" onmouseleave="this.style.transform='';this.style.boxShadow=''">
+        <div style="background:linear-gradient(145deg,#1a3d6b,var(--navy));height:260px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;position:relative;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:rgba(255,255,255,0.25);letter-spacing:0.15em;">LIP BALM</span>
+          <span style="font-size:11px;color:rgba(200,169,110,0.6);letter-spacing:0.1em;">15 ml</span>
+        </div>
+        <div style="padding:24px;">
+          <div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Pillar 02 — Lip</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:8px;color:var(--text);">Protective Lip Balm</h3>
+          <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">Shields and soothes chapped lips. Carbohydrate-free, dispensed through a hygienic jumbo tube.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+            <span style="font-size:10px;background:rgba(30,74,122,0.06);border:1px solid rgba(30,74,122,0.15);color:var(--navy);padding:3px 8px;">Glycerin-Free</span>
+            <span style="font-size:10px;background:rgba(30,74,122,0.06);border:1px solid rgba(30,74,122,0.15);color:var(--navy);padding:3px 8px;">Keto-Safe</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:22px;color:var(--gold);font-weight:500;">$18 CAD</span>
+            <button onclick="showPage('checkout')" style="background:var(--navy);color:var(--white);border:none;padding:10px 20px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 3: Body Balm -->
+      <div class="shop-card" data-cat="body keto sensitive" style="background:var(--white);border:1px solid var(--cream-dark);cursor:pointer;transition:all 0.25s;" onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(20,52,89,0.1)'" onmouseleave="this.style.transform='';this.style.boxShadow=''">
+        <div style="background:linear-gradient(145deg,#112d52,var(--navy));height:260px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;position:relative;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:rgba(255,255,255,0.25);letter-spacing:0.15em;">BODY BALM</span>
+          <span style="font-size:11px;color:rgba(200,169,110,0.6);letter-spacing:0.1em;">120 ml</span>
+        </div>
+        <div style="padding:24px;">
+          <div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Pillar 03 — Body</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:8px;color:var(--text);">Rich Body Balm</h3>
+          <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">Deeply nourishing head-to-toe balm. No greasy fingers, dispensed through a jumbo tube for ease.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+            <span style="font-size:10px;background:rgba(30,74,122,0.06);border:1px solid rgba(30,74,122,0.15);color:var(--navy);padding:3px 8px;">Glycerin-Free</span>
+            <span style="font-size:10px;background:rgba(30,74,122,0.06);border:1px solid rgba(30,74,122,0.15);color:var(--navy);padding:3px 8px;">Keto-Safe</span>
+            <span style="font-size:10px;background:rgba(30,74,122,0.06);border:1px solid rgba(30,74,122,0.15);color:var(--navy);padding:3px 8px;">Sensitive Skin</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:22px;color:var(--gold);font-weight:500;">$42 CAD</span>
+            <button onclick="showPage('checkout')" style="background:var(--navy);color:var(--white);border:none;padding:10px 20px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bundle Banner -->
+    <div style="margin-top:32px;background:var(--navy-deep);padding:40px 48px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
+      <div>
+        <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">✦ Complete Ritual</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--white);margin-bottom:8px;">The Full Sophee Bundle</h3>
+        <p style="font-size:13px;color:rgba(253,250,246,0.55);line-height:1.7;margin-bottom:16px;">All three products. One intention. Save $10 when you shop the complete ritual — carbohydrate-free, from face to body.</p>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <span style="font-size:26px;color:var(--gold);font-weight:500;">$108 CAD</span>
+          <span style="font-size:13px;color:rgba(253,250,246,0.4);text-decoration:line-through;">$118 CAD</span>
+          <span style="background:rgba(200,169,110,0.15);color:var(--gold);font-size:11px;padding:3px 10px;border:1px solid rgba(200,169,110,0.3);">Save $10</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end;">
+        <button onclick="showPage('checkout')" style="background:var(--gold);color:var(--navy-deep);border:none;padding:14px 32px;font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Shop the Bundle</button>
+        <button onclick="showPage('lab')" style="background:none;color:rgba(253,250,246,0.6);border:1px solid rgba(200,169,110,0.25);padding:12px 32px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Try in Virtual Lab ✦</button>
+      </div>
+    </div>
+
+    <!-- Trust Strip -->
+    <div style="margin-top:32px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--cream-dark);">
+      <div style="background:var(--white);padding:24px;text-align:center;">
+        <div style="font-size:20px;color:var(--gold);margin-bottom:8px;">✦</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px;">Made in Canada</div>
+        <div style="font-size:11px;color:var(--muted);">British Columbia</div>
+      </div>
+      <div style="background:var(--white);padding:24px;text-align:center;">
+        <div style="font-size:20px;color:var(--gold);margin-bottom:8px;">✦</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px;">Carbohydrate-Free</div>
+        <div style="font-size:11px;color:var(--muted);">Every formulation</div>
+      </div>
+      <div style="background:var(--white);padding:24px;text-align:center;">
+        <div style="font-size:20px;color:var(--gold);margin-bottom:8px;">✦</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px;">Thoughtfully Sourced</div>
+        <div style="font-size:11px;color:var(--muted);">Every ingredient</div>
+      </div>
+      <div style="background:var(--white);padding:24px;text-align:center;">
+        <div style="font-size:20px;color:var(--gold);margin-bottom:8px;">✦</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px;">No Greenwashing</div>
+        <div style="font-size:11px;color:var(--muted);">Ever</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     HOMEPAGE
+════════════════════════════════ -->
+<div class="page active" id="home">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">✦ Made in Canada</div>
+      <h1>Skincare with<br><em>nothing to hide.</em></h1>
+      <p class="hero-sub">Carbohydrate-free. Thoughtfully sourced. Formulated by a biologist, in honour of a daughter. Every ingredient chosen with intention and transparency.</p>
+      <div class="hero-ctas" style="justify-content:center;">
+        <button class="btn-primary" onclick="showPage('pdp')">Shop Now</button>
+        <button class="btn-outline" onclick="showPage('home')">Our Story</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Reco Strip -->
+  <div class="ai-reco-strip">
+    <span class="sparkle">✦</span>
+    <p class="ai-reco-text"><strong>AI Personalization:</strong> Based on trending searches - you might also like:</p>
+    <div class="ai-chips">
+      <button class="ai-chip">Keto-safe moisturizer</button>
+      <button class="ai-chip">Glycerin-free lip balm</button>
+      <button class="ai-chip">Fragrance-free body balm</button>
+      <button class="ai-chip">Sensitive skin facial oil</button>
+    </div>
+  </div>
+
+  <!-- Trust Bar -->
+  <div class="trust-bar">
+    <div class="trust-item"><span class="trust-icon">✦</span><span>Made in Canada</span></div>
+    <div class="trust-item"><span class="trust-icon">✦</span><span>Thoughtfully Sourced Ingredients</span></div>
+    <div class="trust-item"><span class="trust-icon">✦</span><span>Carbohydrate-Free Formulation</span></div>
+    <div class="trust-item"><span class="trust-icon">✦</span><span>No Greenwashing. Ever.</span></div>
+  </div>
+
+  <!-- Products -->
+  <div class="section">
+    <div class="section-label">✦ Our Collection</div>
+    <h2>Three products. Zero compromise.</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img"><span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">FACIAL OIL</span><span class="ai-reco-badge">✦ AI Pick for You</span></div>
+        <div class="product-info">
+          <div class="product-name">Soothing Facial Oil</div>
+          <p class="product-desc">An uplifting, sensory-calm blend for daily balance. Formulated without glycerin, sorbitol, or cornstarch.</p>
+          <div class="product-footer">
+            <span class="product-price">$58 CAD</span>
+            <button class="add-btn" onclick="showPage('pdp')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">LIP BALM</span></div>
+        <div class="product-info">
+          <div class="product-name">Protective Lip Balm</div>
+          <p class="product-desc">Shields chapped lips from harsh environmental damage. Carbohydrate-free, in a hygienic jumbo tube.</p>
+          <div class="product-footer">
+            <span class="product-price">$18 CAD</span>
+            <button class="add-btn" onclick="showPage('pdp')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">BODY BALM</span></div>
+        <div class="product-info">
+          <div class="product-name">Rich Body Balm</div>
+          <p class="product-desc">Deeply nourishing head-to-toe balm. No greasy fingers - dispensed through a jumbo tube for ease.</p>
+          <div class="product-footer">
+            <span class="product-price">$42 CAD</span>
+            <button class="add-btn" onclick="showPage('pdp')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Personalized Carousel -->
+  <div class="ai-carousel-section">
+    <div class="section-label">✦ AI Recommendations</div>
+    <h2>Chosen for you.</h2>
+    <p class="ai-carousel-sub">Personalized based on what ingredient-conscious shoppers like you are exploring.</p>
+    <div class="carousel-track">
+      <div class="carousel-card">
+        <div class="carousel-card-emoji" style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">FACIAL OIL</div>
+        <h4>Facial Oil</h4>
+        <p>$58 CAD</p>
+        <p class="ai-match">✦ 97% match for your profile</p>
+      </div>
+      <div class="carousel-card">
+        <div class="carousel-card-emoji" style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">LIP BALM</div>
+        <h4>Lip Balm</h4>
+        <p>$18 CAD</p>
+        <p class="ai-match">✦ Top pick for keto users</p>
+      </div>
+      <div class="carousel-card">
+        <div class="carousel-card-emoji" style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">BODY BALM</div>
+        <h4>Body Balm</h4>
+        <p>$42 CAD</p>
+        <p class="ai-match">✦ Loved by caregivers</p>
+      </div>
+      <div class="carousel-card">
+        <div class="carousel-card-emoji" style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">BUNDLE</div>
+        <h4>Full Bundle</h4>
+        <p>$108 CAD</p>
+        <p class="ai-match">✦ Best value</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Philosophy -->
+  <div class="philosophy">
+    <div class="philosophy-text">
+      <div class="section-label">✦ Our Philosophy</div>
+      <h2>Natural doesn't always mean what you think.</h2>
+      <p>Glycerin, sorbitol, cornstarch - all common in "natural" skincare. All carbohydrates. All capable of absorbing through skin. For those following a ketogenic protocol, this matters more than most brands acknowledge.</p>
+      <p>Sophee Botanics was built on a single commitment: ingredient transparency, without compromise.</p>
+      <div class="philosophy-rule"></div>
+      <div class="ingredient-pills">
+        <div class="pill-no"><span class="x">✗</span> Glycerin</div>
+        <div class="pill-no"><span class="x">✗</span> Sorbitol</div>
+        <div class="pill-no"><span class="x">✗</span> Cornstarch</div>
+        <div class="pill-no"><span class="x">✗</span> Alcohol Sugars</div>
+      </div>
+    </div>
+    <div class="philosophy-visual">
+      <div class="ing-row"><span class="ing-name">Rose Hip Seed Oil</span><span class="ing-status yes">✓ Included</span></div>
+      <div class="ing-row"><span class="ing-name">Shea Butter</span><span class="ing-status yes">✓ Included</span></div>
+      <div class="ing-row"><span class="ing-name">Jojoba Oil</span><span class="ing-status yes">✓ Included</span></div>
+      <div class="ing-row no-border"><span class="ing-name">Glycerin</span><span class="ing-status no">✗ Never</span></div>
+      <div class="ing-row no-border"><span class="ing-name">Sorbitol</span><span class="ing-status no">✗ Never</span></div>
+      <div class="ing-row no-border"><span class="ing-name">Cornstarch</span><span class="ing-status no">✗ Never</span></div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Founder -->
+  <div class="founder-band">
+    <div class="founder-avatar">D</div>
+    <div>
+      <div class="founder-quote">"I started making my own lotions because I couldn't find products I trusted. Then I realized most natural ingredients are sugar-based. So I changed the formula entirely."</div>
+      <div class="founder-name">- Dominique, Founder & Formulator, MSc Biology</div>
+    </div>
+  </div>
+
+  <!-- Personas -->
+  <div class="personas">
+    <h2>Made for those who read the label.</h2>
+    <div class="persona-grid">
+      <div class="persona-card" data-initial="A">
+        <div class="persona-tag">Persona 01</div>
+        <h3>Avia</h3>
+        <div class="persona-sub">29 · Vancouver · Conscious Minimalist</div>
+        <div class="persona-quote">"I don't want ten products. I want three I can trust completely."</div>
+        <div class="persona-needs">
+          <div class="persona-need">Researches ingredients before purchasing</div>
+          <div class="persona-need">Values brand transparency and ethics</div>
+          <div class="persona-need">Sensitive skin, fragrance-aware</div>
+        </div>
+      </div>
+      <div class="persona-card" data-initial="A">
+        <div class="persona-tag">Persona 02</div>
+        <h3>Angela</h3>
+        <div class="persona-sub">38 · Suburban BC · Overloaded Caregiver</div>
+        <div class="persona-quote">"I need to know exactly what I'm putting on my child's skin. No guessing."</div>
+        <div class="persona-needs">
+          <div class="persona-need">Managing complex daily care protocols</div>
+          <div class="persona-need">Needs verified keto-safe products</div>
+          <div class="persona-need">One less thing to worry about</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonials -->
+  <div class="testimonials">
+    <h2>From those who've made the switch.</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-text">"Finally a brand that understands what carbohydrate-free actually means. My daughter has been on the ketogenic diet for two years and Sophee is the only skincare I trust."</div>
+        <div class="testimonial-author">- M.L., Verified Purchase · BC</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-text">"The facial oil absorbs beautifully and leaves zero residue. As someone who reads every ingredient, I appreciate how clean and clear this label is."</div>
+        <div class="testimonial-author">- R.T., Verified Purchase · Ontario</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-text">"The body balm in the tube is genius. No mess, no contamination, and the ingredients are exactly what they say. I've been recommending it to everyone in our keto community."</div>
+        <div class="testimonial-author">- J.K., Verified Purchase · Alberta</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Sophee Botanics</div>
+        <p>Carbohydrate-free. Thoughtfully sourced.Made in Canada. In honour of Sofia.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Shop</h5>
+        <a href="#">Facial Oil</a>
+        <a href="#">Lip Balm</a>
+        <a href="#">Body Balm</a>
+        <a href="#">Bundle</a>
+      </div>
+      <div class="footer-col">
+        <h5>Learn</h5>
+        <a href="#">Our Story</a>
+        <a href="#">Ingredients</a>
+        <a href="#">Virtual Lab</a>
+        <a href="#">Journal</a>
+      </div>
+      <div class="footer-col">
+        <h5>Stay in touch</h5>
+        <div class="newsletter-form">
+          <input class="newsletter-input" type="email" placeholder="Your email">
+          <button class="newsletter-btn">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Sophee Botanics Inc. All rights reserved.</p>
+      <p class="made-bc">Made in Canada</p>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════
+     PRODUCT PAGE
+════════════════════════════════ -->
+<div class="page" id="pdp">
+  <div class="pdp">
+    <div class="pdp-gallery">
+      <div class="pdp-main-img"><span style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,255,255,0.4);letter-spacing:0.1em;">FACIAL OIL</span></div>
+      <div class="pdp-thumbs">
+        <div class="pdp-thumb active" style="font-size:9px;color:var(--gold);">OIL</div>
+        <div class="pdp-thumb" style="font-size:9px;color:rgba(255,255,255,0.4);">BALM</div>
+        <div class="pdp-thumb" style="font-size:9px;color:rgba(255,255,255,0.4);">LIP</div>
+      </div>
+    </div>
+
+    <div class="pdp-info">
+      <div class="pdp-eyebrow">✦ Pillar 1 - Ingredient Transparency</div>
+      <h1>Soothing Facial Oil</h1>
+      <p class="pdp-tagline">An uplifting botanical oil formulated for sensory-calm, daily balance. What goes on your skin matters as much as what goes in your body.</p>
+      <div class="pdp-price">$58 CAD</div>
+
+      <div class="pdp-attributes">
+        <span class="pdp-attr"><span class="dot"></span> Glycerin-Free</span>
+        <span class="pdp-attr"><span class="dot"></span> Thoughtfully Sourced</span>
+        <span class="pdp-attr"><span class="dot"></span>Made in Canada</span>
+        <span class="pdp-attr"><span class="dot"></span> Keto-Safe</span>
+      </div>
+
+      <button class="pdp-add" onclick="showPage('checkout')">Add to Cart - $58</button>
+      <button class="pdp-secondary-btn" onclick="showPage('lab')">Try in the Virtual Botanical Lab ✦</button>
+
+      <!-- Chatbot assist -->
+      <div class="chatbot-assist" onclick="toggleChat()">
+        <span class="chat-icon"></span>
+        <p><span>Have a question about this product?</span> Ask our AI assistant - ingredients, usage, keto safety, and more.</p>
+      </div>
+
+      <!-- AI Lab CTA -->
+      <div class="ai-lab-cta">
+        <div class="ai-lab-cta-header">
+          <span class="sparkle-icon">✦</span>
+          <h4>Ingredient Lab - AI Suggestions</h4>
+        </div>
+        <p>Our AI analyzed your browsing pattern and the ingredients in this product. Based on your profile (sensitive skin, keto-conscious), this oil is a strong match - here's why.</p>
+        <button class="ai-lab-btn" onclick="showPage('lab')">Explore in Virtual Lab →</button>
+      </div>
+
+      <!-- Ingredient Accordion -->
+      <div class="accordion" style="margin-top:28px;">
+        <div class="accordion-item">
+          <button class="accordion-btn open" onclick="toggleAccordion(this)">
+            What's In It <span class="chevron">▾</span>
+          </button>
+          <div class="accordion-content open">
+            <div class="ingredient-list">
+              <div class="ingredient-row">
+                <div>
+                  <div class="ingredient-name">Rose Hip Seed Oil</div>
+                  <div class="ingredient-desc">Rich in omega fatty acids, supports skin elasticity and a calm, even tone.</div>
+                </div>
+              </div>
+              <div class="ingredient-row">
+                <div>
+                  <div class="ingredient-name">Jojoba Oil</div>
+                  <div class="ingredient-desc">Mimics skin's natural sebum. Balancing and deeply nourishing without clogging pores.</div>
+                </div>
+              </div>
+              <div class="ingredient-row">
+                <div>
+                  <div class="ingredient-name">Rose Geranium Essential Oil</div>
+                  <div class="ingredient-desc">Provides the product's uplifting, calming aroma. Naturally occurring - not a synthetic fragrance.</div>
+                </div>
+              </div>
+              <div class="ingredient-row no">
+                <div>
+                  <div class="ingredient-name">Glycerin - ✗ Not Used</div>
+                  <div class="ingredient-desc">A common humectant in natural skincare, but also a carbohydrate. We leave it out - always.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            Why No Glycerin? <span class="chevron">▾</span>
+          </button>
+          <div class="accordion-content">
+            <div class="no-glycerin-callout">
+              <h4>Formulated without glycerin - by design.</h4>
+              <p>Glycerin is a sugar alcohol used in most natural moisturizers as a humectant. It draws water to the skin surface effectively - but it's also a carbohydrate that can absorb transdermally. For those following precise nutritional protocols, that matters. Every Sophee product is formulated without glycerin, sorbitol, cornstarch, or any carbohydrate-based ingredient.</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            How To Use <span class="chevron">▾</span>
+          </button>
+          <div class="accordion-content" style="padding-top: 8px;">
+            <p style="font-size:13px;color:var(--muted);line-height:1.8;">Apply 3–5 drops to clean, dry skin morning and evening. Warm between palms before pressing gently into skin. Suitable for all skin types. Patch test recommended for reactive skin.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     VIRTUAL BOTANICAL LAB
+════════════════════════════════ -->
+<div class="page" id="lab">
+  <div class="lab-page">
+    <!-- Lab Hero -->
+    <div class="lab-hero">
+      <div>
+        <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">✦ AI-Powered Feature</div>
+        <h1>Virtual <em>Botanical</em> Lab</h1>
+        <p>Select your skin type, choose your concerns, mix ingredients - and let our AI simulate results and recommend the right Sophee product for you.</p>
+        <button class="btn-primary" onclick="document.querySelector('.lab-interface').scrollIntoView({behavior:'smooth'})">Start Your Lab Session</button>
+      </div>
+      <div class="lab-flow">
+        <h4>How It Works</h4>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="flow-num">1</div><p>Select your skin type & concerns</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num">2</div><p>Drag & drop ingredients into the lab</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num">3</div><p>AI predicts skin compatibility & results</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num">4</div><p>Get matched to the right Sophee product</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num">5</div><p>Save, share, or purchase your result</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lab Interface -->
+    <div class="lab-interface">
+      <!-- Left Panel: Input -->
+      <div>
+        <div class="lab-panel" style="margin-bottom:20px;">
+          <div class="lab-panel-title"><div class="ai-dot"></div>Step 1 - Your Skin Profile</div>
+
+          <h4 style="font-size:13px;margin-bottom:10px;">Skin Type</h4>
+          <div class="skin-types">
+            <button class="skin-type-btn selected" onclick="selectSkin(this)">Dry</button>
+            <button class="skin-type-btn" onclick="selectSkin(this)">Oily</button>
+            <button class="skin-type-btn" onclick="selectSkin(this)">Combo</button>
+            <button class="skin-type-btn" onclick="selectSkin(this)">Sensitive</button>
+            <button class="skin-type-btn" onclick="selectSkin(this)">Reactive</button>
+            <button class="skin-type-btn" onclick="selectSkin(this)">Normal</button>
+          </div>
+
+          <h4 style="font-size:13px;margin-bottom:10px;">Skin Concerns</h4>
+          <div class="concern-chips">
+            <button class="concern-chip selected" onclick="toggleConcern(this)">Dryness</button>
+            <button class="concern-chip" onclick="toggleConcern(this)">Redness</button>
+            <button class="concern-chip selected" onclick="toggleConcern(this)">Sensitivity</button>
+            <button class="concern-chip" onclick="toggleConcern(this)">Dullness</button>
+            <button class="concern-chip" onclick="toggleConcern(this)">Irritation</button>
+            <button class="concern-chip" onclick="toggleConcern(this)">Keto protocol</button>
+            <button class="concern-chip" onclick="toggleConcern(this)">Fragrance-free</button>
+          </div>
+        </div>
+
+        <div class="lab-panel">
+          <div class="lab-panel-title"><div class="ai-dot"></div>Step 2 - Mix Your Ingredients</div>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Click ingredients to add them to your formula. AI will assess compatibility and predict results.</p>
+
+          <div class="ingredient-pool">
+            <button class="ing-btn selected" onclick="toggleIng(this, 'Rose Hip Oil')">Rose Hip Oil</button>
+            <button class="ing-btn" onclick="toggleIng(this, 'Jojoba Oil')">Jojoba Oil</button>
+            <button class="ing-btn selected" onclick="toggleIng(this, 'Shea Butter')">Shea Butter</button>
+            <button class="ing-btn" onclick="toggleIng(this, 'Argan Oil')">Argan Oil</button>
+            <button class="ing-btn" onclick="toggleIng(this, 'Calendula')">Calendula</button>
+            <button class="ing-btn" onclick="toggleIng(this, 'Vitamin E')">Vitamin E</button>
+          </div>
+
+          <p style="font-size:11px;color:var(--gold);margin-bottom:8px;letter-spacing:0.06em;">YOUR FORMULA ↓</p>
+          <div class="drop-zone" id="drop-zone">
+            <span class="selected-ing-tag">Rose Hip Oil</span>
+            <span class="selected-ing-tag">Shea Butter</span>
+          </div>
+
+          <button class="lab-run-btn" onclick="runLab()">✦ Run AI Analysis →</button>
+        </div>
+      </div>
+
+      <!-- Right Panel: AI Results -->
+      <div class="ai-results">
+        <div class="ai-results-header">
+          <h3>AI Results</h3>
+          <span class="ai-thinking" id="ai-thinking">● Analyzing…</span>
+        </div>
+
+        <div class="result-score">
+          <div class="score-ring"><span class="score-num">94</span></div>
+          <div class="score-label">
+            <strong>Excellent compatibility</strong><br>
+            AI predicts this formula is highly suited to your dry, sensitive skin profile. Rose Hip Oil and Shea Butter are synergistic for barrier repair.
+          </div>
+        </div>
+
+        <div class="result-tips">
+          <p style="font-size:11px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">AI Insight</p>
+          <div class="result-tip"><div class="tip-dot"></div><p>Rose Hip Oil provides essential fatty acids for skin barrier support - ideal for sensitive and dry types.</p></div>
+          <div class="result-tip"><div class="tip-dot"></div><p>Shea Butter is a natural emollient with no carbohydrate-based compounds - fully keto-compatible.</p></div>
+          <div class="result-tip"><div class="tip-dot"></div><p>This combination is fragrance-free at the base level, reducing irritation risk.</p></div>
+        </div>
+
+        <p style="font-size:11px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">Recommended Products</p>
+        <div class="reco-products">
+          <div class="reco-product">
+            <span class="reco-product-emoji" style="font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(255,255,255,0.3);">OIL</span>
+            <div class="reco-product-info">
+              <h5>Soothing Facial Oil</h5>
+              <p>Contains Rose Hip + Jojoba base</p>
+              <p class="reco-match-label">✦ 97% formula match</p>
+            </div>
+            <span class="reco-product-price">$58</span>
+          </div>
+          <div class="reco-product">
+            <span class="reco-product-emoji" style="font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(255,255,255,0.3);">BALM</span>
+            <div class="reco-product-info">
+              <h5>Rich Body Balm</h5>
+              <p>Shea Butter forward, deeply nourishing</p>
+              <p class="reco-match-label">✦ 89% formula match</p>
+            </div>
+            <span class="reco-product-price">$42</span>
+          </div>
+        </div>
+
+        <div class="result-actions">
+          <button class="action-btn"> Save Results</button>
+          <button class="action-btn"> Share</button>
+          <button class="action-btn" style="background:var(--gold);color:var(--navy-deep);border-color:var(--gold);">Shop Matches →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     CHECKOUT
+════════════════════════════════ -->
+<div class="page" id="checkout">
+  <div class="checkout-grid">
+    <div class="checkout-form">
+      <h2>Checkout</h2>
+
+      <!-- Step bar -->
+      <div class="checkout-step-bar">
+        <div class="checkout-step">
+          <div class="step-circle done">✓</div>
+          <span class="step-label">Cart</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="checkout-step">
+          <div class="step-circle active">2</div>
+          <span class="step-label">Details</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="checkout-step">
+          <div class="step-circle">3</div>
+          <span class="step-label">Shipping</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="checkout-step">
+          <div class="step-circle">4</div>
+          <span class="step-label">Payment</span>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h4>Contact Information</h4>
+        <div class="form-field">
+          <label>Email Address</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-row">
+          <div class="form-field" style="margin:0">
+            <label>First Name</label>
+            <input type="text" placeholder="Angela">
+          </div>
+          <div class="form-field" style="margin:0">
+            <label>Last Name</label>
+            <input type="text" placeholder="Chen">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h4>Shipping Address</h4>
+        <div class="form-field">
+          <label>Address</label>
+          <input type="text" placeholder="123 Birch Lane">
+        </div>
+        <div class="form-row">
+          <div class="form-field" style="margin:0">
+            <label>City</label>
+            <input type="text" placeholder="Burnaby">
+          </div>
+          <div class="form-field" style="margin:0">
+            <label>Postal Code</label>
+            <input type="text" placeholder="V5C 1A1">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Province</label>
+          <input type="text" placeholder="British Columbia">
+        </div>
+      </div>
+
+      <button class="btn-primary" style="width:100%;padding:16px;">Continue to Shipping →</button>
+    </div>
+
+    <!-- Summary -->
+    <div class="checkout-summary">
+      <h3>Your Order</h3>
+
+      <div class="cart-line">
+        <span class="cart-line-emoji"></span>
+        <div class="cart-line-info"><h5>Soothing Facial Oil</h5><p>30ml · 1 unit</p></div>
+        <span class="cart-line-price">$58</span>
+      </div>
+      <div class="cart-line">
+        <span class="cart-line-emoji"></span>
+        <div class="cart-line-info"><h5>Protective Lip Balm</h5><p>15ml · 1 unit</p></div>
+        <span class="cart-line-price">$18</span>
+      </div>
+
+      <div class="cart-total">
+        <span>Subtotal (CAD)</span>
+        <strong>$76.00</strong>
+      </div>
+      <p style="font-size:11px;color:rgba(253,250,246,0.3);margin-top:6px;">Free shipping on orders over $80 in Canada</p>
+
+      <!-- AI Upsell -->
+      <div class="upsell-block">
+        <h4>✦ AI Suggestion - You're Almost There</h4>
+        <div class="upsell-item">
+          <span style="font-size:28px;"></span>
+          <div class="upsell-item-info">
+            <p>Rich Body Balm</p>
+            <span>Add $42 → unlock free shipping</span>
+          </div>
+          <button class="upsell-add-btn">+ Add</button>
+        </div>
+      </div>
+
+      <!-- Checkout chatbot -->
+      <div class="checkout-chatbot">
+        <div class="chatbot-header" onclick="toggleCheckoutChat()">
+          <div class="chatbot-status"></div>
+          <p>AI Order Assistant - Track, ask, or get help</p>
+          <span class="chevron" id="checkout-chevron">▾</span>
+        </div>
+        <div class="chatbot-messages" id="checkout-chat">
+          <div class="chat-bubble">Hi Angela! Your order will ship from BC within 2 business days.  Can I help with anything?</div>
+          <div class="chat-bubble user">Is the Body Balm keto safe?</div>
+          <div class="chat-bubble">Yes - the Rich Body Balm contains zero glycerin, sorbitol, or carbohydrate-based ingredients. It's fully compatible with strict ketogenic protocols. Would you like to add it to your order?</div>
+          <div class="chat-input-row">
+            <input type="text" placeholder="Ask about your order…">
+            <button class="chat-send">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     MOBILE VIEW
+════════════════════════════════ -->
+<div class="page" id="mobile">
+  <div class="mobile-wrapper">
+    <div class="mobile-frame" style="position:relative;height:860px;overflow:hidden;">
+      <!-- Status bar -->
+      <div class="mobile-status-bar">
+        <span>9:41</span>
+        <span>●●● 5G 100%</span>
+      </div>
+
+      <!-- Mobile Nav -->
+      <div class="mobile-nav">
+        <div class="mobile-logo">Sophee Botanics</div>
+        <div class="mobile-icons">
+          <span></span>
+          <span style="position:relative;"> <span style="position:absolute;top:-4px;right:-4px;background:var(--gold);color:var(--navy-deep);font-size:8px;border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center;font-weight:700;">2</span></span>
+        </div>
+      </div>
+
+      <!-- Smart Search -->
+      <div class="mobile-search">
+        <span style="font-size:13px;color:var(--muted);"></span>
+        <input placeholder="Search products, ingredients…">
+        <span class="mobile-ai-badge">AI</span>
+      </div>
+
+      <!-- Hero -->
+      <div class="mobile-hero">
+        <h1>Skincare with<br><em style="font-style:italic;color:var(--gold);">nothing to hide.</em></h1>
+        <p>Carbohydrate-free. Thoughtfully sourced.Made in Canada.</p>
+        <div class="mobile-hero-btns">
+          <button class="mobile-btn-p">Shop Now</button>
+          <button class="mobile-btn-o">Our Story</button>
+        </div>
+      </div>
+
+      <!-- Trust -->
+      <div class="mobile-trust">
+        <div class="mobile-trust-item"><span></span><span>Made in Canada</span></div>
+        <div class="mobile-trust-item"><span></span><span>Organic</span></div>
+        <div class="mobile-trust-item"><span></span><span>Carb-Free</span></div>
+        <div class="mobile-trust-item"><span>✦</span><span>Transparent</span></div>
+      </div>
+
+      <!-- AI Reco -->
+      <div class="mobile-ai-reco">
+        <p><span style="color:var(--gold);">✦</span> <strong>AI picks for you:</strong></p>
+        <div class="mobile-chips">
+          <div class="mobile-chip">Keto-safe moisturizer</div>
+          <div class="mobile-chip">Glycerin-free</div>
+          <div class="mobile-chip">Sensitive skin</div>
+        </div>
+      </div>
+
+      <!-- Products -->
+      <div class="mobile-products">
+        <h3>Our Collection</h3>
+        <div class="mobile-product-scroll">
+          <div class="mobile-product-card">
+            <div class="mobile-product-img"></div>
+            <div class="mobile-product-name">Facial Oil</div>
+            <div class="mobile-product-price">$58 CAD</div>
+          </div>
+          <div class="mobile-product-card">
+            <div class="mobile-product-img"></div>
+            <div class="mobile-product-name">Lip Balm</div>
+            <div class="mobile-product-price">$18 CAD</div>
+          </div>
+          <div class="mobile-product-card">
+            <div class="mobile-product-img"></div>
+            <div class="mobile-product-name">Body Balm</div>
+            <div class="mobile-product-price">$42 CAD</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Virtual Lab CTA -->
+      <div class="mobile-lab-cta">
+        <span class="lab-icon"></span>
+        <div>
+          <h4>Virtual Botanical Lab</h4>
+          <p>✦ Try the AI ingredient experience</p>
+        </div>
+      </div>
+
+      <!-- FABs -->
+      <div class="fab-lab">
+        <span class="sparkle">✦</span>
+        <span>Virtual Lab</span>
+      </div>
+      <div class="fab-chatbot"></div>
+
+      <!-- Bottom Nav -->
+      <div class="mobile-bottom-nav">
+        <div class="bottom-nav-item active">
+          <span></span><span>Home</span>
+        </div>
+        <div class="bottom-nav-item">
+          <span></span><span>Shop</span>
+        </div>
+        <div class="bottom-nav-item">
+          <span></span><span>Lab</span>
+        </div>
+        <div class="bottom-nav-item">
+          <span></span><span>Story</span>
+        </div>
+        <div class="bottom-nav-item">
+          <span></span><span>Cart</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Page switcher
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const map = {home:0, shop:1, pdp:2, lab:3, checkout:4, mobile:5};
+  const idx = map[id];
+  if (idx !== undefined) document.querySelectorAll('.page-btn')[idx].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// Shop filter
+function filterProducts(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.style.background = 'none'; b.style.color = 'var(--text)'; b.style.borderColor = 'var(--cream-dark)';
+  });
+  btn.style.background = 'var(--navy)'; btn.style.color = 'var(--white)'; btn.style.borderColor = 'var(--navy)';
+  document.querySelectorAll('.shop-card').forEach(card => {
+    const cats = card.dataset.cat || '';
+    card.style.display = (cat === 'all' || cats.includes(cat)) ? 'block' : 'none';
+  });
+}
+function toggleAccordion(btn) {
+  const content = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  content.classList.toggle('open');
+}
+
+// Chatbot
+function toggleChat() {
+  document.getElementById('chatbot-window').classList.toggle('open');
+}
+
+const replies = [
+  "Great question! All Sophee products are formulated without glycerin, sorbitol, cornstarch, or any carbohydrate-based ingredient. ",
+  "Our Facial Oil contains Rose Hip Seed Oil, Jojoba Oil, and Rose Geranium essential oil. Nothing hidden.",
+  "Sophee ships across Canada within 2–5 business days. Free shipping on orders over $80 CAD.",
+  "The keto diet requires strict carbohydrate management - including what's applied to skin, as some compounds absorb transdermally. Sophee was formulated with exactly this in mind.",
+];
+let replyIdx = 0;
+
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const body = document.getElementById('chatbot-body');
+  if (!input.value.trim()) return;
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-msg user-msg';
+  userMsg.textContent = input.value;
+  body.appendChild(userMsg);
+  input.value = '';
+  setTimeout(() => {
+    const botMsg = document.createElement('div');
+    botMsg.className = 'chat-msg bot';
+    botMsg.textContent = replies[replyIdx % replies.length];
+    replyIdx++;
+    body.appendChild(botMsg);
+    body.scrollTop = body.scrollHeight;
+  }, 800);
+  body.scrollTop = body.scrollHeight;
+}
+
+// Checkout chat
+function toggleCheckoutChat() {
+  const chat = document.getElementById('checkout-chat');
+  const chevron = document.getElementById('checkout-chevron');
+  chat.classList.toggle('open');
+  chevron.textContent = chat.classList.contains('open') ? '▴' : '▾';
+}
+
+// Lab functions
+function selectSkin(btn) {
+  document.querySelectorAll('.skin-type-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function toggleConcern(btn) {
+  btn.classList.toggle('selected');
+}
+
+const selectedIngs = new Set(['Rose Hip Oil', 'Shea Butter']);
+function toggleIng(btn, name) {
+  btn.classList.toggle('selected');
+  if (selectedIngs.has(name)) selectedIngs.delete(name);
+  else selectedIngs.add(name);
+  updateDropZone();
+}
+
+function updateDropZone() {
+  const zone = document.getElementById('drop-zone');
+  if (selectedIngs.size === 0) {
+    zone.innerHTML = '<p>Click ingredients above to build your formula</p>';
+  } else {
+    zone.innerHTML = [...selectedIngs].map(i => `<span class="selected-ing-tag">${i}</span>`).join('');
+  }
+}
+
+function runLab() {
+  const thinking = document.getElementById('ai-thinking');
+  thinking.textContent = '● Analyzing…';
+  setTimeout(() => { thinking.textContent = '● Complete'; }, 1500);
+}
+</script>
+</body>
+</html>
