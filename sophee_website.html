@@ -267,7 +267,7 @@ nav {
   cursor: pointer; transition: all 0.2s;
 }
 .carousel-card:hover { background: rgba(200,169,110,0.08); border-color: var(--gold); }
-.carousel-card-emoji { font-size: 32px; margin-bottom: 12px; }
+.carousel-card-emoji { font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.25); font-family: 'Cormorant Garamond', serif; margin-bottom: 12px; min-height: 20px; }
 .carousel-card h4 { color: var(--white); font-size: 15px; font-weight: 300; margin-bottom: 4px; }
 .carousel-card p { color: var(--gold); font-size: 13px; }
 .ai-match { font-size: 10px; color: rgba(200,169,110,0.7); margin-top: 8px; }
@@ -1140,26 +1140,34 @@ footer {
     <h2>Chosen for you.</h2>
     <p class="ai-carousel-sub">Personalized based on what ingredient-conscious shoppers like you are exploring.</p>
     <div class="carousel-track">
-      <div class="carousel-card">
-        <div class="carousel-card-emoji" style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">FACIAL OIL</div>
+      <div class="carousel-card" onclick="showPage('pdp')">
+        <div style="height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.15em;">FACIAL OIL</span>
+        </div>
         <h4>Facial Oil</h4>
         <p>$58 CAD</p>
         <p class="ai-match">✦ 97% match for your profile</p>
       </div>
-      <div class="carousel-card">
-        <div class="carousel-card-emoji" style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">LIP BALM</div>
+      <div class="carousel-card" onclick="showPage('pdp')">
+        <div style="height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.15em;">LIP BALM</span>
+        </div>
         <h4>Lip Balm</h4>
         <p>$18 CAD</p>
         <p class="ai-match">✦ Top pick for keto users</p>
       </div>
-      <div class="carousel-card">
-        <div class="carousel-card-emoji" style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">BODY BALM</div>
+      <div class="carousel-card" onclick="showPage('pdp')">
+        <div style="height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.15em;">BODY BALM</span>
+        </div>
         <h4>Body Balm</h4>
         <p>$42 CAD</p>
         <p class="ai-match">✦ Loved by caregivers</p>
       </div>
-      <div class="carousel-card">
-        <div class="carousel-card-emoji" style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">BUNDLE</div>
+      <div class="carousel-card" onclick="showPage('checkout')">
+        <div style="height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:0.15em;">BUNDLE</span>
+        </div>
         <h4>Full Bundle</h4>
         <p>$108 CAD</p>
         <p class="ai-match">✦ Best value</p>
